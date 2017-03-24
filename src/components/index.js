@@ -1,3 +1,4 @@
+import Counts                      from './Counts.jsx';
 import Branches                    from './Branches.jsx';
 import PullRequests                from './PullRequests.jsx';
 import PullRequestsGauge           from './PullRequestsGauge.jsx';
@@ -11,6 +12,7 @@ import TopCommitter                from './TopCommitter.jsx';
 
 
 export default {
+    Counts:                      Counts,
     Branches:                    Branches,
     PullRequests:                PullRequests,
     PullRequestsGauge:           PullRequestsGauge,
