@@ -57,14 +57,14 @@ const client = mozaik => {
                     return buffer.commits
                 }
             })
-        
+
     }
 
     const apiCalls = {
         organization({ organization }) {
             return buildApiRequest(`/orgs/${organization}`)
                 .then(res => res.body)
-            
+
         },
 
         user({ user }) {
@@ -85,13 +85,13 @@ const client = mozaik => {
         repositoryParticipationStats({ repository }) {
             return buildApiRequest(`/repos/${repository}/stats/participation`)
                 .then(res => res.body)
-            
+
         },
 
         repositoryLanguages({ repository }) {
             return buildApiRequest(`/repos/${repository}/languages`)
                 .then(res => res.body)
-            
+
         },
 
         // Be warned that this API call can be heavy enough
@@ -104,13 +104,19 @@ const client = mozaik => {
                     }))
                 })
                 .then(branches => ({ branches }))
-            
+
         },
 
         branch({ repository, branch }) {
             return buildApiRequest(`/repos/${repository}/branches/${branch}`)
                 .then(res => res.body)
-            
+
+        },
+
+        counts(params) {
+            return buildApiRequest(`/search/issues?q=${params.term}`)
+                .then(res => res.body.total_count)
+            ;
         },
 
         repositoryContributorsStats({ repository }) {
@@ -159,7 +165,7 @@ const client = mozaik => {
 
                         return label
                     })
-                
+
             }))
         },
 
@@ -171,7 +177,7 @@ const client = mozaik => {
 
             return req.promise()
                 .then(res => res.body)
-            
+
         },
 
         trafficViews({ repository }) {
