@@ -8,7 +8,7 @@
  */
 
 import Branches                    from './Branches'
-import Count                       from './Count',
+import Count                       from './Count'
 import PullRequests                from './pull-requests/PullRequests'
 import UserBadge                   from './badges/UserBadge'
 import OrgBadge                    from './badges/OrgBadge'
