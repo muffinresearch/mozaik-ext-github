@@ -113,10 +113,9 @@ const client = mozaik => {
 
         },
 
-        counts(params) {
-            return buildApiRequest(`/search/issues?q=${params.term}`)
-                .then(res => res.body.total_count)
-            ;
+        counts({ term }) {
+            return buildApiRequest(`/search/issues?q=${term}`)
+                .then(res => ({ totalCount: res.body.total_count }))
         },
 
         repositoryContributorsStats({ repository }) {

@@ -1,31 +1,24 @@
 import React, { Component, PropTypes } from 'react'
-import moment                          from 'moment'
 import {
     TrapApiError,
     Widget,
     WidgetHeader,
     WidgetBody,
-    WidgetStatusBadge,
 } from 'mozaik/ui'
 
 
-export default class Status extends Component {
+export default class Count extends Component {
     static propTypes = {
         term: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         warnLimit: PropTypes.number,
-        apiData: PropTypes.shape({
-            totalCount: PropTypes.string.isRequired,
-        })
+        totalCount: PropTypes.string.isRequired,
     }
 
-    static getApiRequest() {
-        let { term } = this.props;
+    static getApiRequest({ term }) {
         return {
-            id: `github.counts.${ term }`,
-            params: {
-                term: term
-            }
+            id: `github.counts.${term}`,
+            params: { term }
         };
     }
 
@@ -34,32 +27,49 @@ export default class Status extends Component {
     }
 
     render() {
-        const { apiData, apiError } = this.props
+        const { apiData, apiError, title, warnLimit } = this.props
         const { theme } = this.context
+        let backgroundColor = theme.colors.success;
 
-        countContainerStyle = {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+        if (!apiData) {
+            return null;
         }
 
-        spanStyle = {
-            background: theme.colors.success,
-            borderRadius: '50%',
-            color: '#fff',
-            display: 'table-cell',
-            fontSize: '7rem',
-            height: '13rem',
-            lineHeight: '13rem',
-            margin: '1rem',
-            textAlign: 'center',
-            verticalAlign: 'middle',
-            width: '13rem',
+        if (parseInt(apiData.totalCount, 10) >= parseInt(warnLimit, 10)) {
+            backgroundColor = theme.colors.failure;
         }
+
+        const countContainerStyle = {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          padding: '20px',
+        }
+
+        const svgStyle = {
+          maxHeight: '100%',
+        };
+
+        const circleStyle = {
+          fill: backgroundColor,
+        };
+
+        const textStyle = {
+          fontSize: '4rem',
+          fill: '#fff',
+          fontFamily: 'sans-serif',
+          textAnchor: 'middle',
+        };
 
         const countWidget = (
           <div style={countContainerStyle}>
-              <span style={spanStyle}>{ apiData.totalCount }</span>
+            <svg viewBox="0 0 140 140" preserveAspectRatio="xMinYMin meet" style={svgStyle}>
+                <g>
+                    <circle r="50%" cx="50%" cy="50%" class="circle-back" style={circleStyle} />
+                    <text x="50%" y="50%" dy="0.3em" style={textStyle}>{apiData.totalCount}</text>
+                </g>
+            </svg>
           </div>
         )
 
