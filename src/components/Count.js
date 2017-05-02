@@ -48,7 +48,7 @@ export default class Count extends Component {
         }
 
         const svgStyle = {
-          maxHeight: '100%',
+          height: '100%',
         };
 
         const circleStyle = {
