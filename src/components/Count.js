@@ -11,8 +11,8 @@ export default class Count extends Component {
     static propTypes = {
         term: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
-        warnLimit: PropTypes.number,
         totalCount: PropTypes.string.isRequired,
+        warnLimit: PropTypes.number,
     }
 
     static getApiRequest({ term }) {
@@ -26,6 +26,25 @@ export default class Count extends Component {
         theme: PropTypes.object.isRequired,
     }
 
+    getLink(content) {
+        const { link } = this.props;
+        const countContainerStyle = {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          padding: '20px',
+        }
+
+        if (link) {
+            return (
+             <a style={countContainerStyle} href={link} target="_blank" rel="noopener noreferrer">{content}</a>
+            );
+        } else {
+            return (<div style={countContainerStyle}>{content}</div>);
+        }
+    }
+
     render() {
         const { apiData, apiError, title, warnLimit } = this.props
         const { theme } = this.context
@@ -37,14 +56,6 @@ export default class Count extends Component {
 
         if (parseInt(apiData.totalCount, 10) >= parseInt(warnLimit, 10)) {
             backgroundColor = theme.colors.failure;
-        }
-
-        const countContainerStyle = {
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          padding: '20px',
         }
 
         const svgStyle = {
@@ -62,16 +73,12 @@ export default class Count extends Component {
           textAnchor: 'middle',
         };
 
-        const countWidget = (
-          <div style={countContainerStyle}>
-            <svg viewBox="0 0 140 140" preserveAspectRatio="xMinYMin meet" style={svgStyle}>
-                <g>
-                    <circle r="50%" cx="50%" cy="50%" class="circle-back" style={circleStyle} />
-                    <text x="50%" y="50%" dy="0.3em" style={textStyle}>{apiData.totalCount}</text>
-                </g>
-            </svg>
-          </div>
-        )
+        const countWidget = this.getLink(<svg viewBox="0 0 140 140" preserveAspectRatio="xMinYMin meet" style={svgStyle}>
+              <g>
+                  <circle r="50%" cx="50%" cy="50%" class="circle-back" style={circleStyle} />
+                  <text x="50%" y="50%" dy="0.3em" style={textStyle}>{apiData.totalCount}</text>
+              </g>
+          </svg>);
 
         return (
             <Widget>
